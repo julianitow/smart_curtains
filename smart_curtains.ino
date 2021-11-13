@@ -1,8 +1,8 @@
 
 #include <ESP8266WiFi.h>
 
-const char* ssid     = "uifeedu75";
-const char* password = "mandalorianBGdu75";
+const char* ssid     = "SSID";
+const char* password = "PASSWD";
 
 const int pwmMotorA = D1;
 const int pwmMotorB = D2;
