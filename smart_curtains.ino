@@ -4,6 +4,13 @@
 const char* ssid     = "uifeedu75";
 const char* password = "mandalorianBGdu75";
 
+const int pwmMotorA = D1;
+const int pwmMotorB = D2;
+const int dirMotorA = D3;
+const int dirMotorB = D4;
+
+int motorSpeed = 1000;
+
 WiFiServer server(80);
 
 String header;
@@ -32,6 +39,40 @@ void setup() {
   ip = WiFi.localIP().toString();
   Serial.println(ip);
   server.begin();
+
+  Serial.println("Initializing motors...");
+  pinMode(pwmMotorA , OUTPUT);
+  pinMode(pwmMotorB, OUTPUT);
+  pinMode(dirMotorA, OUTPUT);
+  pinMode(dirMotorB, OUTPUT);
+  Serial.println("Done.");
+}
+
+void stop() {
+  digitalWrite(pwmMotorA, 0);
+  digitalWrite(dirMotorA, LOW);
+  digitalWrite(pwmMotorB, 0);
+  digitalWrite(dirMotorB, LOW);
+}
+
+void open(){
+  Serial.println("opening curtains...");
+  digitalWrite(pwmMotorA, motorSpeed);
+  digitalWrite(dirMotorA, LOW);
+  digitalWrite(pwmMotorB, motorSpeed);
+  digitalWrite(dirMotorB, LOW);
+  delay(1500);
+  stop();
+}
+
+void close(){
+  Serial.println("closing curtains...");
+  digitalWrite(pwmMotorA, motorSpeed);
+  digitalWrite(dirMotorA, HIGH);
+  digitalWrite(pwmMotorB, motorSpeed);
+  digitalWrite(dirMotorB, HIGH);
+  delay(1500);
+  stop();
 }
 
 void loop(){
@@ -62,9 +103,9 @@ void loop(){
 
             //TODO MOTORISATION
             if (header.indexOf("GET /" + ip + "/open") >= 0) {
-              Serial.println("open curtains");
+              open();
             } else if (header.indexOf("GET /" + ip + "/close") >= 0) {
-              Serial.println("close curtains");
+              close();
             }
             
             // Display the HTML web page
